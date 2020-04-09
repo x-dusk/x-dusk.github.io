@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="CS">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Docker笔记（一）概念理解及常用命令 - x-dusk的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/favicon.ico" />
+        </div>
+        <div class="name">
+            <i>x-dusk</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker起源—容器"><span class="toc-text">Docker起源—容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker—让容器变得简单"><span class="toc-text">Docker—让容器变得简单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker的几个重要的概念"><span class="toc-text">Docker的几个重要的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker容器"><span class="toc-text">Docker容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常用命令"><span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Docker笔记（一）概念理解及常用命令
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-04-09 20:33:14</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#docker" title="docker">docker</a>
+        <span>/</span>
+        
+        <a class="tag" href="/tags/#总结" title="总结">总结</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>本文主要介绍Docker必知概念和必会使用方法，适合想要了解docker技术和学习docker日常使用的读者。</p>
+<h2 id="Docker起源—容器"><a href="#Docker起源—容器" class="headerlink" title="Docker起源—容器"></a>Docker起源—容器</h2><p>&#8194; &#8194;&#8194;&#8194;最早，一台服务器只能运行同类的单一应用，想要增加一个新的应用，需要采购一个新的服务器，为了解决服务器资源严重浪费的问题，虚拟机(VM)技术出现了，但是像VMwave，VisualBox这些虚拟机技术并非十全十美，最大的问题是每个虚拟机都要有一个操作系统，这些OS会占用额外的CPU和RAM—这些资源本可以用于运行更多的应用，同时由于启动速度慢，可移植性差等问题，<strong>容器(Container)技术</strong>开始发展起来，容器的运行不会再独占操作系统，启动速度快，便于迁移，可以说解决了虚拟机时代的“顽疾”。<br>&#8194; &#8194;&#8194;&#8194;容器技术起源于Linux，是开源社区长期努力持续贡献的产物，但因为早期容器技术过于复杂，并没有真正被大众所接受，直到Docker的出现。</p>
+<h2 id="Docker—让容器变得简单"><a href="#Docker—让容器变得简单" class="headerlink" title="Docker—让容器变得简单"></a>Docker—让容器变得简单</h2><p>&#8194;&#8194;&#8194;&#8194;Docker是一种用<strong>Go语言</strong>开发的用于<strong>创建</strong>、<strong>运行</strong>，<strong>管理</strong>、<strong>编排容器</strong>的<strong>开源软件</strong>，是GitHub上<strong>Moby开源项目</strong>的一部分，位于旧金山的Docker公司是整个Moby项目的维护者。Docker公司致力于“将Docker和容器技术推向全世界”，有一说一，正是Docker这家公司<strong>让容器变得简单</strong>，<strong>Linux容器技术</strong>才得到了广泛的应用。近几年<strong>微软</strong>也和Docker公司、社区进行了深入合作，促进Docker和容器技术在<strong>Windows平台</strong>的发展，Mac系统上也可以用Docker for Mac来运行Linux容器，虽然这是通过在Mac上启动一个轻量级Linux虚拟机来运行Linux容器的，但这种方式至少方便了开发人员在Mac上开发和调试Linux容器。</p>
+<h2 id="Docker的几个重要的概念"><a href="#Docker的几个重要的概念" class="headerlink" title="Docker的几个重要的概念"></a>Docker的几个重要的概念</h2><ul>
+<li><p><strong>Docker引擎</strong>：docker引擎是<strong>用于运行和编排容器的基础设施工具</strong>，可以认为常说的Docker就是指Docker引擎。Docker引擎主要由以下组件构成：==Docker客户端（Docker Client）==，==Docker守护进程（Docker Daemon)==，==containerd==以及==runc==。它们共同负责容器的创建和运行。</p>
+</li>
+<li><p><strong>Docker架构</strong>：C/S架构（Client/Server），Client主要负责传递Docker命令，容器的管理，编排等在Server侧（Docker守护进程，containerd等）来完成。从图中可以看到Docker正逐步走向模块化，容器的执行逻辑和运行代码下放给了下层的containerd和runc，Docker daemon成为了更高层的管理者，负责镜像管理，安全特性，RESTful API等。</p>
+</li>
+<li><p><img src="https://img-blog.csdnimg.cn/2019112011250976.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d5ZmNvZGU=,size_16,color_FFFFFF,t_70" alt="Docker引擎架构"></p>
+<center>图一 Docker架构</center>
+</li>
+<li><p><strong>Docker镜像</strong>：镜像可以理解为<strong>构建容器的模板</strong>，更进一步可以理解为<strong>面向对象中的类(Class)</strong>，镜像内部由<strong>精简的操作系统文件</strong>，<strong>应用运行所必须的文件和依赖包</strong>，和<strong>运行容器所需的配置参数(环境变量)</strong>等组成。镜像对外看是一个只读的文件集合的整体，镜像对内是<strong>分层叠加</strong>实现的，这里的分层可以理解为<strong>构建镜像过程中的不同阶段镜像的不同版本</strong>，举一个例子，基于ubuntu18.04构建一个镜像，这就是这个镜像的第一层，然后再装上python包，这就是第二层，再加上安全补丁就是第三层，后续每次做的添加都是一层，最终构建时Docker负责<strong>堆叠</strong>这些层形成一个整体的镜像。这样松耦合分层堆叠的好处是可以在不同镜像之间<strong>共享镜像层</strong>，这是由Docker的存储引擎自动实现的。<br>（1）镜像体积一般很小，Docker官方Alpine linux镜像只有4MB，Windows镜像会比较大<br>（2）从<strong>一个镜像可以启动一个或多个容器</strong>（传入的参数不同或运行的端口不同），所有的容器没有全部停止或销毁，对应的镜像<strong>无法删除</strong><br>（3）从面向对象的角度来看，<strong>镜像是类，容器是对象</strong>，镜像是静态的，容器是运行时的镜像<br>（4）镜像仓库服务：Docker镜像存储在<strong>镜像仓库服务</strong>（Image Registry）中，Docker客户端默认使用官方公共仓库服务<a href="https://hub.docker.com/search/" target="_blank" rel="noopener">Docker Hub</a>，也可配置私有仓库服务，包含多个仓库，每个仓库可以有多个镜像<br><img src="https://img-blog.csdnimg.cn/20191120172928567.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d5ZmNvZGU=,size_16,color_FFFFFF,t_70" alt="镜像仓库服务"></p>
+<center>图二 镜像仓库服务</center>
+
+</li>
+</ul>
+<p>（5) Docker安装之后，本地并没有镜像，<strong>需要从镜像仓库服务拉取镜像到本地</strong>，linux Docker本地镜像仓库通常位于/var/lib/docker/&lt;storage-driver&gt;<br>（6）镜像命名和标签：官方仓库中通过<strong>镜像的名字</strong>和<strong>标签</strong>（中间用：分割）定位一个镜像。从官方仓库拉取镜像的命令是：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker image pull &lt;repository&gt;:&lt;tag&gt;</span><br><span class="line">docker image pull redis:latest //从官方redis仓库拉取标签为latest的镜像</span><br><span class="line">docker image pull mysql:<span class="number">5.6</span> //从官方仓库中拉取标签为<span class="number">5.6</span>的mysql镜像，标签一般就是版本号</span><br><span class="line">docker image pull mysql //不写tag则Docker会默认拉取tag为latest的镜像</span><br></pre></td></tr></table></figure>
+<p>（7）注意，latest未必是仓库中最新的镜像，<strong>一个镜像可以有多个标签</strong>，<code>docker image pull -a mysql</code>,会拉取该mysql仓库中的<strong>所有镜像</strong>，<code>docker image ls</code>命令会列出<strong>本地仓库所有的镜像</strong><br>（8）通过Docker命令行搜索Docker Hub上的镜像：<code>docker search name</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search mysql //搜索仓库名或者非官方仓库的组织名中含有mysql的镜像</span><br></pre></td></tr></table></figure>
+<p>返回的结果中既有官方又有非官方的，使用<code>- -filter</code>可以进行过滤，使用<code>- -limit</code>可以对返回内容做限制。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker search mysql <span class="operator">-f</span> <span class="string">"is-official=true"</span> -<span class="literal">-limit</span> <span class="number">30</span></span><br></pre></td></tr></table></figure>
+<p>（9）查看镜像分层：该命令会<strong>展示镜像的细节</strong>，包括<strong>镜像层数据</strong>和<strong>镜像元数据</strong>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> docker image inspect mysql:<span class="number">5.7</span></span><br><span class="line">[</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="string">"Id"</span>:<span class="string">"sha256:bdfs8dffd..."</span>,</span><br><span class="line">		<span class="string">"RepoTags"</span>:[</span><br><span class="line">			<span class="string">"mysql:5.7"</span></span><br><span class="line">			],</span><br><span class="line">		<span class="string">"RootFS"</span>:&#123;</span><br><span class="line">			<span class="string">"Type"</span>:<span class="string">"layers"</span>,</span><br><span class="line">			<span class="string">"Layers"</span>:[</span><br><span class="line">				<span class="string">"sha256:c8a75145fc...894129005e461a43875a094b93412"</span>,</span><br><span class="line">   				<span class="string">"sha256:c6f2b330b6...7214ed6aac305dd03f70b95cdc610"</span>,</span><br><span class="line">   				<span class="string">"sha256:055757a193...3a9565d78962c7f368d5ac5984998"</span>,</span><br><span class="line">   				<span class="string">"sha256:4837348061...12695f548406ea77feb5074e195e3"</span>,</span><br><span class="line">   				<span class="string">"sha256:0cad5e07ba...4bae4cfc66b376265e16c32a0aae9"</span></span><br><span class="line">			]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>（10）删除镜像：删除操作会删除当前主机上的该镜像以及<strong>相关的镜像层</strong>，但如果某个镜像层被多个镜像共享，则只有所有<strong>依赖该镜像层的镜像都被删除了该镜像层才会被删除</strong>。如果镜像<strong>有正在运行的容器</strong>，则也不被允许删除。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker image rm mysql:<span class="number">5.7</span> //删除mysql5.<span class="number">7</span>的镜像</span><br><span class="line">docker image rm [<span class="type">id</span>] //删除镜像ID为[<span class="type">id</span>]的镜像</span><br><span class="line">docker image rm <span class="variable">$</span>(docker image ls <span class="literal">-q</span>) <span class="operator">-f</span> //删除本地系统中的全部镜像</span><br></pre></td></tr></table></figure>
+<h2 id="Docker容器"><a href="#Docker容器" class="headerlink" title="Docker容器"></a>Docker容器</h2><p>（1）容器是镜像的<strong>运行时实例</strong>。可以认为是镜像的一次运行，或者说运行状态的镜像，<strong>一个镜像可以启动多个容器</strong>。<img src="https://img-blog.csdnimg.cn/201911202024383.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d5ZmNvZGU=,size_16,color_FFFFFF,t_70" alt="一个镜像运行多个容器"></p>
+<center>图三 一个镜像可以运行多个容器</center>
+
+<p>（2）容器vs虚拟机<br>&#8194;&#8194;&#8194;&#8194;容器和虚拟机都依赖于宿主机才能运行，两者都属于<strong>虚拟化技术</strong>，最大的不同在于，<strong>虚拟机是硬件级别的虚拟化</strong>，在物理机的基础上进行硬件的虚拟化，将物理资源划分为虚拟资源，然后在上面安装一个个操作系统，再在操作系统上安装应用。而<strong>容器是在操作系统级别的虚拟化</strong>，将操作系统的资源划分为虚拟资源，上层在这些虚拟资源上构建容器应用，所有容器公用同一个宿主机操作系统。<img src="https://img-blog.csdnimg.cn/20191120203820790.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d5ZmNvZGU=,size_16,color_FFFFFF,t_70" alt="硬件虚拟化的虚拟机技术"></p>
+<center>图四 虚拟机技术结构示意</center>
+
+<p><img src="https://img-blog.csdnimg.cn/20191120203921988.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d5ZmNvZGU=,size_16,color_FFFFFF,t_70" alt="操作系统虚拟化的容器技术"></p>
+<center>图五 容器技术结构示意</center>
+
+<p>（3）运行容器<br>第一步，先检查Docker是否在运行：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker version //显示docker客户端和服务端守护进程的信息，说明docker已经运行</span><br><span class="line"></span><br><span class="line">service docker status //linux系统下执行 显示docker的运行状态</span><br></pre></td></tr></table></figure>
+<p>然后，用<code>docker container run &lt;options&gt; &lt;image&gt;:&lt;tag&gt; &lt;app&gt;</code>来创建并启动一个<strong>新容器</strong>，image为镜像名，tag为标签，app为运行在容器中的程序，命令中container可以省略</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -<span class="literal">-name</span> ubu <span class="literal">-it</span> ubuntu:latest /bin/bash //linux 示例 在ubuntu容器中运行一个bash终端</span><br><span class="line"></span><br><span class="line">docker run <span class="literal">-it</span> microsoft/powershell:nanoserver pwsh.exe //windows 示例</span><br></pre></td></tr></table></figure>
+<p>-i ——<strong>让容器的输入保持打开状态</strong><br>-t ——<strong>让Docker分配一个伪终端</strong><br>–name ——-<strong>给容器起一个名字，可以代替长串的容器ID</strong><br>期间发生的事情：<strong>命令回车之后，Docker客户端选择合适的API调用Docker daemon，Docker daemon先看本地仓库是否有该镜像，然后再去Docker Hub查询对应镜像，最后将镜像拉取到本地，创建容器并在其中运行指定的程序。</strong><br>（4）容器进程<br>&#8194;&#8194;&#8194;&#8194;在容器中执行<code>ps -elf</code>可以查看容器中正在运行的进程，默认有一个bash进程，如果没有别的进程，输入exit退出，会导致容器进程也被杀死，容器中至少有一个进程才能存在。按下<code>ctrl P+Q</code>组合键可以不终止容器运行地退出容器。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker container ls //列出当前系统正在运行的容器列表</span><br><span class="line"></span><br><span class="line">docker exec <span class="literal">-it</span> &lt;containerId&gt; /bin/bash //docker exec命令会创建一个新的bash终端连接</span><br><span class="line">到正在运行的容器</span><br></pre></td></tr></table></figure>
+<p>（5）容器生命周期<br><strong>新建并启动</strong>一个容器<code>docker run --name test_mysql -it mysql:5.7 /bin/bash</code><br>等同于<code>docker create + docker start</code><br><strong>停止</strong>一个容器：<code>docker stop test_mysql</code><br>查看全部<strong>处于运行状态</strong>的容器：<code>docker container ls</code><br>查看<strong>包括停止状态</strong>的<strong>所有</strong>容器：<code>docker container ls -a</code><br><strong>打开一个关闭的容器</strong>：<code>docker start test_mysql</code><br><strong>删除</strong>一个容器：<code>docker container rm test_mysql</code>，最好<strong>先stop容器</strong>，加-f是强制删除，不推荐<br>（6）<strong>容器端口映射</strong><br>在容器中运行需要指定端口的应用（如web服务器）时，需要指定容器的端口映射</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run <span class="literal">-d</span> -<span class="literal">-name</span> test_tomcat <span class="literal">-p</span> <span class="number">80</span>:<span class="number">8080</span> tomcat:<span class="number">8.5</span>.<span class="number">34</span></span><br></pre></td></tr></table></figure>
+<p>-d ——表示后台运行，-it是交互式运行<br>-p ——[<strong>Docker主机端口</strong>]:[<strong>容器端口</strong>]，这意味着当外界有请求打到Docker主机的80端口时，请求会被映射到容器内的8080端口，容器内的web服务器监听8080端口就可以收到请求。<br>（6）容器启动的<strong>默认行为</strong><br>&#8194;&#8194;&#8194;&#8194;镜像中包含了容器启动时指定的默认应用，所以有时在<code>docker run</code>启动一个容器的时候，默认启动了一些进程。如官方提供的web服务器等。可以通过<code>docker image inspect image:tag</code>来查看</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">&#123;</span><br><span class="line"><span class="string">"Id"</span>: <span class="string">"sha256:07e574331ce3768f30305519...49214bf3020ee69bba1"</span>,</span><br><span class="line"><span class="string">"RepoTags"</span>: [</span><br><span class="line">  <span class="string">"tomcat:latest</span></span><br><span class="line"><span class="string">],</span></span><br><span class="line"><span class="string">"</span><span class="type">Cmd</span><span class="string">": [ //cmd为容器将会执行的命令或者应用</span></span><br><span class="line"><span class="string">  "</span>/<span class="type">bin</span>/<span class="type">sh</span><span class="string">",</span></span><br><span class="line"><span class="string">  "</span>-<span class="type">c</span><span class="string">",</span></span><br><span class="line"><span class="string">  "</span><span class="comment">#(nop) CMD [\"/bin/sh\" \"-c\" \"cd /src java \</span></span><br><span class="line">  <span class="type">.</span>\<span class="string">"]"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>（1）查看本地所有镜像：<code>docker images</code><br>（2）查看本地所有正在运行的容器的状态：<code>docker ps</code>，加个-a可以列出所有容器的状态：<code>docker ps -a</code><br>（3）容器的导入导出：<br>导出：<code>docker export 容器ID或名称 &gt; 文件名</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker export test_mysql &gt; exp_mysql</span><br></pre></td></tr></table></figure>
+
+<p>导入：<code>cat 文件名| docker import - 生成的镜像名称:标签</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat exp_mysql | docker import - local_mysql:test</span><br></pre></td></tr></table></figure>
+<p>（4）查看端口映射：<code>docker port [imageID]或者[name]</code><br>（5）查看容器内部输出：<code>docker logs -f 容器id或者名字</code> 该命令可以像tail -f一样，打印出容器内部的标准输出。<br>（6）查看容器内部进程：<code>docker top 容器id或者名字</code><br>（7）容器与宿主机之间复制文件：<br>①容器内文件复制到宿主机：<code>docker cp 容器id或名字:/path 宿主机目的路径</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp test_mysql:/test.txt  /home/temp/</span><br></pre></td></tr></table></figure>
+<p>②宿主机文件复制到容器内：<code>docker cp 宿主机文件或目录 容器id或名字:/path/</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp /root/test.txt  test_mysql:/path/</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文主要介绍了Docker入门须知的一些概念，以及<strong>运维角度</strong>下常用的一些知识点，下章介绍<strong>开发角度</strong>下的Docker，重点是<strong>Dockerfile</strong>。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1.《<a href="https://book.douban.com/subject/30486354/" target="_blank" rel="noopener">深入浅出Docker</a>》作者: [英]奈吉尔· 波尔顿（Nigel Poulton）人民邮电出版社<br>2.《<a href="https://book.douban.com/subject/33410747/" target="_blank" rel="noopener">Docker容器技术与高可用实战</a>》作者: 肖睿 刘震 人民邮电出版社</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud" target="_blank" rel="noopener">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="CS">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        Docker笔记（二）应用的容器化（Dockerfile） - x-dusk的博客
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/img/favicon.ico" />
+        </div>
+        <div class="name">
+            <i>x-dusk</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、简介"><span class="toc-text">一、简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、应用容器化的整体流程"><span class="toc-text">二、应用容器化的整体流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Dockerfile详解"><span class="toc-text">三、Dockerfile详解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#COPY和ADD"><span class="toc-text">COPY和ADD</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CMD和ENTRYPOINT"><span class="toc-text">CMD和ENTRYPOINT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#四、从Dockerfile构建镜像"><span class="toc-text">四、从Dockerfile构建镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、Dockerfile的一些原则及注意事项"><span class="toc-text">五、Dockerfile的一些原则及注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、总结"><span class="toc-text">六、总结</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        Docker笔记（二）应用的容器化（Dockerfile）
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2020-04-09 21:01:55</span></span>
+        
+        <span class="attr">标签：/
+        
+        <a class="tag" href="/tags/#docker" title="docker">docker</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content no-indent">
+        <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>&#8194; &#8194;&#8194;&#8194;将应用程序整合到容器中进行运行的过程，称为应用的“容器化”，也可以叫做“Docker化”。一个应用程序在代码编写，测试完成之后，还要面临在生产环境的构建，部署，运维等一系列繁杂的问题，开发人员与运维人员也许要经过多次的协调沟通才能将一个应用成功投入生产。设想如果将应用程序转变成一个容器，那些与应用运行所需环境相关的问题就几乎都不存在了，开发只需要专注于应用代码的开发，稍微加上一点“如何将应用变成容器”的说明工作，而运维人员只需要统一考虑容器的运行管理就可以了，本文就来介绍这个“如何将应用变成容器”的工作—应用的容器化。</p>
+<h2 id="二、应用容器化的整体流程"><a href="#二、应用容器化的整体流程" class="headerlink" title="二、应用容器化的整体流程"></a>二、应用容器化的整体流程</h2><p>&#8194; &#8194;&#8194;&#8194;容器化可以简化应用的构建、部署和运行过程，我们先大体掌握以下主要流程步骤：<br><img src="https://img-blog.csdnimg.cn/20191126212743389.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3d5ZmNvZGU=,size_16,color_FFFFFF,t_70" alt="应用容器化的整体流程"></p>
+<!-- <center></center> -->
+
+<p>1.编写应用代码<br>2.在应用主目录下，创建一个Dockerfile，其中包括当前应用的描述、环境依赖、以及如何运行这个应用<br>3.在应用主目录下，对Dockerfile文件执行docker image build命令<br>4.等待Docker将应用程序构建到Docker镜像中<br>5.一旦应用被打包成了一个Docker镜像，就能以镜像的形式交付、转移、团队分享等，并以Docker容器的方式运行了<br>注意，Dockerfile文件首字母必须大写，这是Docker image build默认寻找的Dockerfile文件名，当然其实也可以通过-f 来指定Dockerfile的文件名，只不过一般情况下没有必要</p>
+<h2 id="三、Dockerfile详解"><a href="#三、Dockerfile详解" class="headerlink" title="三、Dockerfile详解"></a>三、Dockerfile详解</h2><p>Dockerfile的两个主要作用：</p>
+<p>1.对当前应用的描述<br>2.指导Docker完成应用的容器化，从构建至运行</p>
+<p>打开一个Dockerfile文件，看一下具体长什么样子：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> cat Dockerfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># Dockerfile of Example</span></span><br><span class="line"><span class="comment"># Version 1.0</span></span><br><span class="line"><span class="comment"># Base Images</span></span><br><span class="line">FROM centos</span><br><span class="line">LABEL maintainer=<span class="string">"you@example.com"</span></span><br><span class="line">RUN yum install <span class="literal">-y</span> -<span class="literal">-update</span> nodejs nodejs<span class="literal">-npm</span></span><br><span class="line">COPY . /src</span><br><span class="line">WORKDIR /src</span><br><span class="line">RUN npm install</span><br><span class="line">EXPOSE <span class="number">8080</span></span><br><span class="line">ENTRYPOINT [<span class="string">"node"</span>, <span class="string">"./app.js"</span>]</span><br></pre></td></tr></table></figure>
+<p>Dockerfile中的注释以#开头，除注释之外的每一行都是一条指令（Instruction）<br>指令的格式：INSTRUCTION args，指令不区分大小写，但建议指令大写，增强Dockerfile的可读性<br>docker image build命令会按行一行一行来解析Dockerfile中的指令，并顺序执行</p>
+<p>对上面Dockerfile示例文件的解读：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM centos    //以centos镜像作为当前镜像的基础，也就是上一篇中讲的基础镜像层</span><br><span class="line">LABEL maintainer=<span class="string">"you@example.com"</span>    //指定维护者（maintainer)为“you@example.com”，元数据，不会添加新的镜像层，建议添加上维护者信息，这样可以给镜像潜在使用者提供沟通途径。</span><br><span class="line">RUN yum install <span class="literal">-y</span> -<span class="literal">-update</span> nodejs nodejs<span class="literal">-npm</span>    //在centos上用yum安装Nodejs和NPM到当前镜像中，新建镜像层</span><br><span class="line">COPY . /src    //将当前目录中的所有文件（也就是应用代码）复制到镜像中，并新建镜像层</span><br><span class="line">WORKDIR /src    //设置当前的工作目录，后续指令在此目录下执行，会作为元数据记录到镜像配置中，不会创建镜像层</span><br><span class="line">RUN npm instal    //执行npm install安装依赖文件到镜像中，并创建镜像层</span><br><span class="line">EXPOSE <span class="number">8080</span>    //指定应用的网络端口，通过<span class="number">8080</span>端口对外提供Web服务，属于容器内的端口，元数据，不会新建镜像层</span><br><span class="line">ENTRYPOINT [<span class="string">"node"</span>, <span class="string">"./app.js"</span>]    //最后将app.js设置为镜像默认运行的应用，元数据，不会新建镜像层</span><br></pre></td></tr></table></figure>
+<p>表1  Dockerfile常用操作指令<br>指令    含义<br>FROM 镜像    指定基础镜像，第一条指令必须为FROM，每创建一个镜像就需要一条FROM<br>MAINTAINER 名字    说明镜像的维护者信息<br>RUN 命令    在所基于的镜像上执行命令，并提交到新的镜像中<br>CMD[“要运行的程序”,”参数一”,”参数二”]    启动容器时要运行的命令或脚本，只能有一条CMD命令，如果有多个，执行最后一个<br>EXPOSE 端口号    指定新镜像加载到Docker时需要开启的端口，也就是容器监听连接者的端口<br>ENV 环境变量 变量值    设置一个环境变量比如path，会被RUN，CMD等指令用到，还可以定义版本信息便于维护<br>ADD 源文件/目录 目标文件/目录    复制文件，源文件要和Dockerfile同级目录，与COPY不同是源文件可以是url<br>COPY 源文件/目录 目标文件/目录    复制文件，源文件要和Dockerfile同级目录<br>VOLUME [“目录”]    在容器中创建一个挂载点，里面存放的数据在容器销毁后仍然存在<br>USER 用户名/UID    指定运行容器时的用户<br>WORKDIR 路径<br>为在该条命令之后的RUN，CMD，ENTRYPOINT指定工作目录，建议绝对路径</p>
+<p>ENTRYPOINT [“运行的程序”,”若干参数”]    指定镜像以容器方式启动后默认运行的程序<br>HEALTHCHECK    健康检查<br>两个比较：</p>
+<h1 id="COPY和ADD"><a href="#COPY和ADD" class="headerlink" title="COPY和ADD"></a>COPY和ADD</h1><p>ADD是有更复杂语义的复制文件，COPY就是单纯的复制文件，ADD支持源文件是url远程下载，如果源文件是压缩文件，ADD指令会自动解压，复杂语义会带来一定的不确定性，因此建议复制文件就用明确的COPY</p>
+<h1 id="CMD和ENTRYPOINT"><a href="#CMD和ENTRYPOINT" class="headerlink" title="CMD和ENTRYPOINT"></a>CMD和ENTRYPOINT</h1><p>这两个命令是在镜像运行的时候执行的，RUN是在镜像构建的时候执行的，ENTRYPOINT一般指示镜像的主程序入口，CMD中的在和ENTRYPOINT同时存在时作为ENTRYPOINT的参数，Docker run 后附加的参数会被附加在ENTRYPOINT的后面。推荐的做法是ENTRYPOINT作为镜像的主命令，CMD来设定参数。</p>
+<h2 id="四、从Dockerfile构建镜像"><a href="#四、从Dockerfile构建镜像" class="headerlink" title="四、从Dockerfile构建镜像"></a>四、从Dockerfile构建镜像</h2><p>进入应用主目录，执行如下命令：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image build <span class="literal">-t</span> mywebapp:latest <span class="operator">-f</span> Dockerfile.dev .</span><br></pre></td></tr></table></figure>
+<p>-t 指定镜像标签，-f 指定Dockerfile的路径和名称，如果不写，代表是当前目录下的Dockerfile，最后那个点.不能丢，代表从当前目录构建。</p>
+<p>镜像构建完成后，可以从镜像启动容器：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run <span class="literal">-d</span> -<span class="literal">-name</span> c1 <span class="literal">-p</span> <span class="number">80</span>:<span class="number">8080</span> mywebapp:latest</span><br></pre></td></tr></table></figure>
+<p>-d 让应用程序以守护进程的形式后台运行，-p 80：8080表示将主机的80端口映射到容器内的8080端口，–name 为容器起个名字，代替容器ID方便后续命令使用。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.Dockerignore文件</span><br></pre></td></tr></table></figure>
+<p>类似Git的.gitignore文件，Docker也有自己的构建忽略，就是.Dockerignore文件，像一些temp临时文件，测试文件，.git目录，*.md文件等，不必要放入Docker镜像中，在Docker镜像的构建过程中，加入.Dockerignore文件，可以提高构建效率。</p>
+<h2 id="五、Dockerfile的一些原则及注意事项"><a href="#五、Dockerfile的一些原则及注意事项" class="headerlink" title="五、Dockerfile的一些原则及注意事项"></a>五、Dockerfile的一些原则及注意事项</h2><p>避免安装非必要软件包，如文本编辑器，辅助工具等<br>一个容器只运行一个进程，便于对每个容器进行监控和调优，也便于集群扩容或缩容。<br>镜像层尽量保持最少，COPY，RUN，ADD指令会创建镜像层，不要随意使用这些命令<br>多行参数分割，如果安装的软件包很多，建议按照字母顺序排序，并用反斜杠\换行分割，增强Dockerfile可读性<br>FROM指令建议使用官方提供的版本，不建议使用上百M的ubuntu，centos，建议使用轻量级安全的Alpine linux<br>Dockerfile文件要看作程序的组成部分，加入Git等版本控制</p>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p>&#8194; &#8194;&#8194;&#8194;本文主要介绍了通过Dockerfile将自己的应用构建成Docker容器的过程，主要以单体应用的构建为例，至于多容器的应用用到的Docker Compose，以及Docker Swarm集群，后续了解的更为深入时再来介绍。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud" target="_blank" rel="noopener">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
